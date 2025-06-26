@@ -1,7 +1,7 @@
 export function fetchLoggedInUserOrders() {
   return new Promise(async (resolve , reject) =>{
     try{
- const response = await fetch(`${import.meta.VITE_BACKEND_URI}/orders/own/`, {
+ const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/orders/own/`, {
         method: 'GET',
         headers: { 'content-type': 'application/json' },
          credentials: 'include'
@@ -29,7 +29,7 @@ export function fetchLoggedInUserOrders() {
 export function fetchLoggedInUser() {
   return new Promise(async (resolve , reject) =>{
  try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/users/own`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/users/own`, {
         method: 'GET',
         headers: { 'content-type': 'application/json' },
          credentials: 'include'
@@ -51,7 +51,7 @@ export function fetchLoggedInUser() {
 export function updateUser(update) {
   return new Promise(async (resolve) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/users/${update.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/users/${update.id}`, {
         method: 'PATCH',
         body: JSON.stringify(update),
         headers: { 'content-type': 'application/json' },

@@ -1,7 +1,7 @@
 
 export function createUser(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/auth/signup`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/auth/signup`, {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: { 'content-type': 'application/json' },
@@ -15,7 +15,7 @@ export function createUser(userData) {
 export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/auth/login`, {
         method: 'POST',
         body: JSON.stringify(loginInfo),
         headers: { 'content-type': 'application/json' },
@@ -39,7 +39,7 @@ export function loginUser(loginInfo) {
 export function checkAuth() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/auth/check`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/auth/check`, {
         method: 'GET',
         headers: { 'content-type': 'application/json' },
          credentials: 'include'
@@ -62,7 +62,7 @@ export function checkAuth() {
 export function signOut(userId) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/auth/logout`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/auth/logout`, {
         method: 'GET',
         headers: { 'content-type': 'application/json' },
          credentials: 'include'
@@ -84,7 +84,7 @@ export function signOut(userId) {
 export function resetPasswordRequest(email) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/auth/reset-password-request`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/auth/reset-password-request`, {
         method: 'POST',
         body: JSON.stringify({email}),
         headers: { 'content-type': 'application/json' },
@@ -107,7 +107,7 @@ export function resetPasswordRequest(email) {
 export function resetPassword(data) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/auth/reset-password`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/auth/reset-password`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'content-type': 'application/json' },

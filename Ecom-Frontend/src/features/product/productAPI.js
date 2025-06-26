@@ -1,7 +1,7 @@
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/products/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/products/${id}`, {
       credentials:"include"
     });
     const data = await response.json();
@@ -11,7 +11,7 @@ export function fetchProductById(id) {
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/products/`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/products/`, {
       method: 'POST',
       body: JSON.stringify(product),
       headers: { 'content-type': 'application/json' },
@@ -24,7 +24,7 @@ export function createProduct(product) {
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      `${import.meta.VITE_BACKEND_URI}/products/${update.id}`,
+      `${import.meta.env.VITE_BACKEND_URI}/products/${update.id}`,
       {
         method: 'PATCH',
         body: JSON.stringify(update),
@@ -62,7 +62,7 @@ console.log(filter , "filterrr")
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      `${import.meta.VITE_BACKEND_URI}/products?${queryString}` ,{
+      `${import.meta.env.VITE_BACKEND_URI}/products?${queryString}` ,{
         credentials:"include"
       }
     );
@@ -76,7 +76,7 @@ console.log(filter , "filterrr")
 export function fetchCategories() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/categories`,{
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/categories`,{
         credentials:"include"
       });
       
@@ -104,7 +104,7 @@ export function fetchCategories() {
 
 export function fetchBrands() {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/brands`,{
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/brands`,{
       credentials:"include"
     });
     const data = await response.json();

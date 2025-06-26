@@ -22,7 +22,7 @@ export default function StripeCheckout() {
  useEffect(() => {
   if (!currentOrder?.id) return;
 
-  fetch(`${import.meta.VITE_BACKEND_URI}/create-payment-intent`, {
+  fetch(`${import.meta.env.VITE_BACKEND_URI}/create-payment-intent`, {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",

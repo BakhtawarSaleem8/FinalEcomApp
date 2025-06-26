@@ -3,7 +3,7 @@ export function addToCart(item) {
     try {
       console.log("Adding to cart:", item);
       
-      const response = await fetch(`${import.meta.VITE_BACKEND_URI}/cart`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/cart`, {
         method: 'POST',
         body: JSON.stringify(item),
         headers: { 
@@ -30,7 +30,7 @@ export function addToCart(item) {
 
 export function fetchItemsByUserId() {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/cart` ,{
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/cart` ,{
               credentials: 'include'})
 
     const data = await response.json();
@@ -41,7 +41,7 @@ export function fetchItemsByUserId() {
 
 export function updateCart(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/cart/` + update.id, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/cart/` + update.id, {
       method: 'PATCH',
       body: JSON.stringify(update),
       headers: { 'content-type': 'application/json' },
@@ -55,7 +55,7 @@ export function updateCart(update) {
 
 export function deleteItemFromCart(itemId) {
   return new Promise(async (resolve) => {
-    const response = await fetch(`${import.meta.VITE_BACKEND_URI}/cart/`+ itemId, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URI}/cart/`+ itemId, {
       method: 'DELETE',
       headers: { 'content-type': 'application/json' },
                credentials: 'include'
