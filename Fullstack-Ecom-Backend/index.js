@@ -95,11 +95,10 @@ server.use(passport.authenticate('session'));
 
 
 
-
 server.use(
   cors({
-    origin: `${process.env.FRONTEND_URI}`, // Your frontend origin
-    credentials: true, // This is crucial
+    origin: process.env.FRONTEND_URI, 
+    credentials: true,
     exposedHeaders: ['X-Total-Count']
   })
 );
