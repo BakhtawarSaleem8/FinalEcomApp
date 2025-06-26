@@ -75,7 +75,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 //console.log(opts)
 //middlewares
 
-// server.use(express.static(path.resolve(__dirname, 'build')));
+// server.use(express.static(path.resolve(__dirname, '../dist')));
 server.use(cookieParser());
 // Ensure proper session config
 server.use(
@@ -98,20 +98,23 @@ server.use(passport.authenticate('session'));
 
 server.use(
   cors({
-    origin: 'http://localhost:5173', // Your frontend origin
+    origin: `${process.env.FRONTEND_URI}`, // Your frontend origin
     credentials: true, // This is crucial
     exposedHeaders: ['X-Total-Count']
   })
 );
 server.use(express.json()); // to parse req.body
-server.use((req, res, next) => {
-  //console.log('--- Request Debug ---');
-  //console.log('Method:', req.method);
-  //console.log('Path:', req.path);
-  //console.log('Cookies:', req.cookies);
-  //console.log('Headers:', req.headers['cookie']);
-  next()}) // to parse req.body
+// server.use((req, res, next) => {
+//   //console.log('--- Request Debug ---');
+//   //console.log('Method:', req.method);
+//   //console.log('Path:', req.path);
+//   //console.log('Cookies:', req.cookies);
+//   //console.log('Headers:', req.headers['cookie']);
+//   next()}) // to parse req.body
 
+server.use('/', (req,res)=>{
+  res.send("backend hosted")
+})
 server.use('/products', isAuth(), productsRouter.router);
 // we can also use JWT token for client-only auth
 server.use('/categories', isAuth(), categoriesRouter.router);
