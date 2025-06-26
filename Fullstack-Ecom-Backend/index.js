@@ -111,9 +111,7 @@ server.use(express.json()); // to parse req.body
 //   //console.log('Headers:', req.headers['cookie']);
 //   next()}) // to parse req.body
 
-server.use('/', (req,res)=>{
-  res.send("backend hosted")
-})
+
 server.use('/products', isAuth(), productsRouter.router);
 // we can also use JWT token for client-only auth
 server.use('/categories', isAuth(), categoriesRouter.router);
@@ -223,6 +221,9 @@ const stripe = require('stripe')(process.env.STRIPE_SERVER_KEY);
 //     clientSecret: paymentIntent.client_secret,
 //   });
 // });
+server.get('/', (req,res)=>{
+  res.send("backend hosted")
+})
 
 server.post('/create-payment-intent',  async (req, res) => {
   try {
@@ -263,3 +264,4 @@ async function main() {
 server.listen(process.env.PORT, () => {
   console.log('server started');
 });
+
