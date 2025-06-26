@@ -91,7 +91,9 @@ server.use(
     }
   })
 );
+server.use(passport.initialize()); // Required for Passport
 server.use(passport.authenticate('session'));
+
 
 
 
@@ -127,39 +129,74 @@ server.use('/orders', isAuth(), ordersRouter.router);
 // );
 
 // Passport Strategies
+// passport.use(
+//   'local',
+//   new LocalStrategy({ usernameField: 'email' }, async function (
+//     email,
+//     password,
+//     done
+//   ) {
+//     // by default passport uses username
+//     console.log({ email, password });
+//     try {
+//       const user = await User.findOne({ email: email });
+//       console.log(email, password, user);
+//       if (!user) {
+//         return done(null, false, { message: 'invalid credentials' }); // for safety
+//       }
+//       crypto.pbkdf2(
+//         password,
+//         user.salt,
+//         310000,
+//         32,
+//         'sha256',
+//         async function (err, hashedPassword) {
+//           if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
+//             return done(null, false, { message: 'invalid credentials' });
+//           }
+//           const token = jwt.sign(
+//             sanitizeUser(user),
+//             process.env.JWT_SECRET_KEY
+//           );
+//           done(null, { id: user.id, role: user.role, token }); // this lines sends to serializer
+//         }
+//       );
+//     } catch (err) {
+//       done(err);
+//     }
+//   })
+// );
 passport.use(
   'local',
-  new LocalStrategy({ usernameField: 'email' }, async function (
-    email,
-    password,
-    done
-  ) {
-    // by default passport uses username
-    console.log({ email, password });
+  new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-      const user = await User.findOne({ email: email });
-      console.log(email, password, user);
+      const user = await User.findOne({ email });
       if (!user) {
-        return done(null, false, { message: 'invalid credentials' }); // for safety
+        console.log('User not found:', email); // Debug
+        return done(null, false, { message: 'Invalid credentials' });
       }
+
       crypto.pbkdf2(
         password,
         user.salt,
         310000,
         32,
         'sha256',
-        async function (err, hashedPassword) {
-          if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
-            return done(null, false, { message: 'invalid credentials' });
+        async (err, hashedPassword) => {
+          if (err) {
+            console.log('Password hashing error:', err); // Debug
+            return done(err);
           }
-          const token = jwt.sign(
-            sanitizeUser(user),
-            process.env.JWT_SECRET_KEY
-          );
-          done(null, { id: user.id, role: user.role, token }); // this lines sends to serializer
+          if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
+            console.log('Password mismatch for user:', email); // Debug
+            return done(null, false, { message: 'Invalid credentials' });
+          }
+          const token = jwt.sign(sanitizeUser(user), process.env.JWT_SECRET_KEY);
+          done(null, { id: user.id, role: user.role, token });
         }
       );
     } catch (err) {
+      console.log('LocalStrategy error:', err); // Debug
       done(err);
     }
   })
