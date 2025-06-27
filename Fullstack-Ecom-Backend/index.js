@@ -83,6 +83,10 @@ server.use(
     exposedHeaders: ['X-Total-Count']
   })
 );
+// server.options('*', cors({
+//  origin: process.env.FRONTEND_URI,
+//  credentials: true,
+// }));
 
 // Handle preflight requests
 // server.options('*', cors());
