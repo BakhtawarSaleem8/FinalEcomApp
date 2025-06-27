@@ -76,7 +76,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 //middlewares
 server.use(
   cors({
-    origin: process.env.FRONTEND_URI, // Ensure no trailing slash
+    origin: 'https://final-ecom-app.vercel.app', // Ensure no trailing slash
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -97,8 +97,8 @@ server.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 24 * 60 * 60 * 1000
     }
   })
