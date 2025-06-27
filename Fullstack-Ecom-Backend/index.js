@@ -74,6 +74,18 @@ opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = process.env.JWT_SECRET_KEY; 
 //console.log(opts)
 //middlewares
+server.use(
+  cors({
+    origin: process.env.FRONTEND_URI, // Ensure no trailing slash
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['X-Total-Count']
+  })
+);
+
+// Handle preflight requests
+server.options('*', cors());
 
 // server.use(express.static(path.resolve(__dirname, '../dist')));
 server.use(cookieParser());
@@ -97,13 +109,6 @@ server.use(passport.authenticate('session'));
 
 
 
-server.use(
-  cors({
-    origin: process.env.FRONTEND_URI, 
-    credentials: true,
-    exposedHeaders: ['X-Total-Count']
-  })
-);
 server.use(express.json()); // to parse req.body
 // server.use((req, res, next) => {
 //   //console.log('--- Request Debug ---');
@@ -312,7 +317,7 @@ connectDB()
     process.exit(1);
   });
 
-server.listen(process.env.PORT, () => {
-  console.log('server started');
-});
+// server.listen(process.env.PORT, () => {
+//   console.log('server started');
+// });
 
