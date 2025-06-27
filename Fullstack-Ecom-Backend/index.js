@@ -76,7 +76,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 //middlewares
 server.use(
   cors({
-    origin: 'https://final-ecom-app.vercel.app', // Ensure no trailing slash
+    origin: '*', 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
