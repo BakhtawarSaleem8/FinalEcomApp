@@ -90,19 +90,19 @@ server.use(
 // server.use(express.static(path.resolve(__dirname, '../dist')));
 server.use(cookieParser());
 // Ensure proper session config
-// server.use(
-//   session({
-//     secret: process.env.SESSION_KEY,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       httpOnly: true,
-//       secure: true,
-//       sameSite: 'none',
-//       maxAge: 24 * 60 * 60 * 1000
-//     }
-//   })
-// );
+server.use(
+  session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000
+    }
+  })
+);
 server.use(passport.initialize()); // Required for Passport
 server.use(passport.authenticate('session'));
 
