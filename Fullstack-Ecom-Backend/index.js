@@ -23,8 +23,8 @@ const { User } = require('./model/User');
 const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
 const path = require('path');
 const { Order } = require('./model/Order');
-const { env } = require('process');
-
+const process = require('process');
+const connectDB = require('./dbconnection')
 // Webhook
 
 // const endpointSecret = process.env.ENDPOINT_SECRET;
@@ -291,12 +291,26 @@ server.post('/create-payment-intent',  async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-main().catch((err) => console.log(err));
+// main().catch((err) => console.log(err));
 
-async function main() {
-  await mongoose.connect(process.env.MONGODB_URL);
-  console.log('database connected');
-}
+// async function main() {
+//   await mongoose.connect(process.env.MONGODB_URL);
+//   console.log('database connected');
+// }
+
+// Remove the existing main() function and replace with:
+console.log('Connecting with URL:', 
+  process.env.MONGODB_URL);
+connectDB()
+  .then(() => {
+    server.listen(process.env.PORT, () => {
+      console.log(`Server started on port ${process.env.PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to connect to DB:', err);
+    process.exit(1);
+  });
 
 server.listen(process.env.PORT, () => {
   console.log('server started');
