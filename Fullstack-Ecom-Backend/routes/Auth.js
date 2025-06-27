@@ -5,7 +5,7 @@ const passport = require('passport');
 const router = express.Router();
 //  /auth is already added in base path
 router.post('/signup', createUser)
-.post('/login', router.post('/login', (req, res, next) => {
+.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.log('Auth error:', err); // Debug
@@ -19,7 +19,7 @@ router.post('/signup', createUser)
       next(); // Proceeds to loginUser
     });
   })(req, res, next);
-}, loginUser))
+}, loginUser)
 .get('/check',passport.authenticate('jwt'), checkAuth)
 .get('/logout', logout)
 .post('/reset-password-request', resetPasswordRequest)

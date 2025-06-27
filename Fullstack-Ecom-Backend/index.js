@@ -85,7 +85,7 @@ server.use(
 );
 
 // Handle preflight requests
-server.options('*', cors());
+// server.options('*', cors());
 
 // server.use(express.static(path.resolve(__dirname, '../dist')));
 server.use(cookieParser());
