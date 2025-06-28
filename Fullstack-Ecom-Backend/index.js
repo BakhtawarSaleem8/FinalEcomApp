@@ -25,6 +25,8 @@ const path = require('path');
 const { Order } = require('./model/Order');
 const process = require('process');
 const connectDB = require('./dbconnection')
+const MongoStore = require('connect-mongo');
+
 // Webhook
 
 // const endpointSecret = process.env.ENDPOINT_SECRET;
@@ -83,6 +85,7 @@ server.use(
     exposedHeaders: ['X-Total-Count']
   })
 );
+server.use(express.json());
 // server.options('*', cors({
 //  origin: process.env.FRONTEND_URI,
 //  credentials: true,
@@ -94,27 +97,46 @@ server.use(
 // server.use(express.static(path.resolve(__dirname, '../dist')));
 server.use(cookieParser());
 // Ensure proper session config
+app.use(express.urlencoded({ extended: true }));
+
 server.use(
   session({
-    secret: process.env.SESSION_KEY,
+    secret: process.env.SESSION_KEY || 'secret',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URL,
+      ttl: 14 * 24 * 60 * 60, // 14 days
+    }),
     cookie: {
-      httpOnly: true,
-    domain: '.vercel.app',
-      secure: true,
-      sameSite: 'none',
-      maxAge: 24 * 60 * 60 * 1000
-    }
+      secure: true, // HTTPS-only
+      httpOnly: true, // Accessible only by the server
+      sameSite: 'None', // Cross-site cookie support
+     exposedHeaders: ['set-cookie']
+    },
   })
 );
+// server.use(
+//   session({
+//     secret: process.env.SESSION_KEY,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       httpOnly: true,
+//     domain: '.vercel.app',
+//       secure: true,
+//       sameSite: 'none',
+//       maxAge: 24 * 60 * 60 * 1000
+//     }
+//   })
+// );
 server.use(passport.initialize()); // Required for Passport
 server.use(passport.authenticate('session'));
 
 
 
 
-server.use(express.json()); // to parse req.body
+ // to parse req.body
 // server.use((req, res, next) => {
 //   //console.log('--- Request Debug ---');
 //   //console.log('Method:', req.method);
