@@ -76,16 +76,18 @@ opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = process.env.JWT_SECRET_KEY; 
 //console.log(opts)
 //middlewares
+server.use(cookieParser());
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 server.use(
   cors({
     origin: 'https://final-ecom-app.vercel.app', 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    exposedHeaders: ['X-Total-Count']
+  exposedHeaders: ['X-Total-Count', 'set-cookie']
   })
 );
-server.use(express.json());
 // server.options('*', cors({
 //  origin: process.env.FRONTEND_URI,
 //  credentials: true,
@@ -95,9 +97,7 @@ server.use(express.json());
 // server.options('*', cors());
 
 // server.use(express.static(path.resolve(__dirname, '../dist')));
-server.use(cookieParser());
 // Ensure proper session config
-app.use(express.urlencoded({ extended: true }));
 
 server.use(
   session({
