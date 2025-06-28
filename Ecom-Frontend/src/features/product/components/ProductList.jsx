@@ -48,7 +48,7 @@ export default function ProductList() {
   const status = useSelector(selectProductListStatus);
 console.log(categories , "categories")
   useEffect(() => {
-   dispatch(fetchProductsByFiltersAsync)
+   dispatch(fetchProductsByFiltersAsync())
   }, [])
   
   const filters = [
