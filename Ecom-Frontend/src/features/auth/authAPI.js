@@ -22,7 +22,7 @@ export function loginUser(loginInfo) {
          credentials: 'include'
       });
       if (response.ok) {
-          console.log('Document cookies:', document.cookie);
+          // console.log('Document cookies:', document.cookie);
         const data = await response.json();
         resolve({ data });
       } else {

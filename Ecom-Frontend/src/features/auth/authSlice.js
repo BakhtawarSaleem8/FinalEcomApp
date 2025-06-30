@@ -31,7 +31,7 @@ export const loginUserAsync = createAsyncThunk(
   'user/loginUser',
   async (loginInfo, { rejectWithValue }) => {
     try {
-      console.log(loginInfo , "login Info")
+      // console.log(loginInfo , "login Info")
       const response = await loginUser(loginInfo);
       return response.data;
     } catch (error) {
@@ -68,7 +68,7 @@ export const resetPasswordAsync = createAsyncThunk(
   async (data,{rejectWithValue}) => {
     try {
       const response = await resetPassword(data);
-      console.log(response);
+      // console.log(response);
       return response.data;
     } catch (error) {
       console.log(error);

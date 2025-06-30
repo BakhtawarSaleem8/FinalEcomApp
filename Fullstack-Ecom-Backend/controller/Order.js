@@ -81,7 +81,7 @@ exports.fetchOrdersByUser = async (req, res) => {
   
     try {
       const docs = await query.exec();
-      console.log(docs)
+      // console.log(docs)
       res.set('X-Total-Count', totalDocs);
       res.status(200).json(docs);
     } catch (err) {

@@ -26,6 +26,7 @@ const { Order } = require('./model/Order');
 const process = require('process');
 const connectDB = require('./dbconnection')
 const MongoStore = require('connect-mongo');
+const _dirname = process.cwd()
 
 // Webhook
 
@@ -81,7 +82,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(
   cors({
-    origin: 'https://final-ecom-app.vercel.app', 
+    origin: 'http://localhost:8080', 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -96,7 +97,6 @@ server.use(
 // Handle preflight requests
 // server.options('*', cors());
 
-// server.use(express.static(path.resolve(__dirname, '../dist')));
 // Ensure proper session config
 
 server.use(
@@ -104,10 +104,10 @@ server.use(
     secret: process.env.SESSION_KEY || 'secret',
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URL,
-      ttl: 14 * 24 * 60 * 60, // 14 days
-    }),
+    // store: MongoStore.create({
+    //   mongoUrl: process.env.MONGODB_URL,
+    //   ttl: 14 * 24 * 60 * 60, // 14 days
+    // }),
     cookie: {
       secure: true, // HTTPS-only
       httpOnly: true, // Accessible only by the server
@@ -133,7 +133,13 @@ server.use(
 server.use(passport.initialize()); // Required for Passport
 server.use(passport.authenticate('session'));
 
-
+// Correct the path and use _dirname (double underscore)
+server.use(express.static(path.join(_dirname, "Ecom-Frontend/dist"), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }}));
 
 
  // to parse req.body
@@ -204,7 +210,7 @@ passport.use(
     try {
       const user = await User.findOne({ email });
       if (!user) {
-        console.log('User not found:', email); // Debug
+        // console.log('User not found:', email); // Debug
         return done(null, false, { message: 'Invalid credentials' });
       }
 
@@ -216,11 +222,11 @@ passport.use(
         'sha256',
         async (err, hashedPassword) => {
           if (err) {
-            console.log('Password hashing error:', err); // Debug
+            // console.log('Password hashing error:', err); 
             return done(err);
           }
           if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
-            console.log('Password mismatch for user:', email); // Debug
+            // console.log('Password mismatch for user:', email); 
             return done(null, false, { message: 'Invalid credentials' });
           }
           const token = jwt.sign(sanitizeUser(user), process.env.JWT_SECRET_KEY);
@@ -228,7 +234,7 @@ passport.use(
         }
       );
     } catch (err) {
-      console.log('LocalStrategy error:', err); // Debug
+      // console.log('LocalStrategy error:', err); 
       done(err);
     }
   })
@@ -294,9 +300,9 @@ server.get('/', (req,res)=>{
   res.send("backend hosted")
 })
 
-server.post('/create-payment-intent',  async (req, res) => {
+server.post('/create-payment-intent', isAuth(), async (req, res) => {
   try {
-    console.log(req , "req in payment")
+    console.log(req.user , req.body.orderId, "req in payment")
     // Verify the order belongs to the authenticated user
     const order = await Order.findOne({
       _id: req.body.orderId,
@@ -330,7 +336,9 @@ server.post('/create-payment-intent',  async (req, res) => {
 //   console.log('database connected');
 // }
 
-// Remove the existing main() function and replace with:
+server.get("/{*any}",(req,res)=>{
+res.sendFile(path.resolve(_dirname, "Ecom-Frontend" , "dist" , "index.html"))
+})
 console.log('Connecting with URL:', 
   process.env.MONGODB_URL);
 connectDB()
