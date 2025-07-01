@@ -1,3 +1,4 @@
+
 # Logs
 logs
 *.log
@@ -7,11 +8,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-.env
+# Node modules
+Ecom-Frontend/node_modules/
+Fullstack-Ecom-Backend/node_modules/
+
+# Environment variables
+Ecom-Frontend/.env
+Ecom-Frontend/.env.local
+Ecom-Frontend/.env.*.local
+Fullstack-Ecom-Backend/.env
+Fullstack-Ecom-Backend/.env.local
+Fullstack-Ecom-Backend/.env.*.local
+
+# Build output
+Ecom-Frontend/dist/
+Fullstack-Ecom-Backend/dist/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
