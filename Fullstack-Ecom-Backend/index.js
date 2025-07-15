@@ -356,3 +356,4 @@ connectDB()
 //   console.log('server started');
 // });
 
+module.exports = app;
