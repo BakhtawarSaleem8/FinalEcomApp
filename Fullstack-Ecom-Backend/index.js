@@ -82,7 +82,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(
   cors({
-    origin: 'http://localhost:8080', 
+    origin: 'https://final-ecom-app-zr29.vercel.app', 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Explicitly allow OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
